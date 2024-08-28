@@ -6,11 +6,7 @@ public class TaskList : BaseEntity
 {
     public string Title { get; private set; }
     public IEnumerable<TaskItem>? TaskItems { get; private set; }
-
-    public TaskList()
-    {
-        
-    }
+    
     public TaskList(string title)
     {
         Title = title;

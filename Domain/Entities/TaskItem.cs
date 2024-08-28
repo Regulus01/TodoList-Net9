@@ -10,11 +10,7 @@ public class TaskItem : BaseEntity
     public bool IsCompleted { get; private set; }
     public Guid TaskListId { get; private set; }
     public TaskList TaskList { get; private set; }
-
-    public TaskItem()
-    {
-        
-    }
+    
     public TaskItem(string title, string description, DateTimeOffset? dueDate, Guid taskListId)
     {
         Title = title;

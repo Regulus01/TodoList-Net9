@@ -2,17 +2,21 @@
 using Domain.Entities.Base;
 using Domain.Interface.Base;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Extensions.Logging;
 
 namespace Infra.Data.Repository.Base;
 
-public class BaseRepository<TContext> : IBaseRepository where TContext : DbContext
+public abstract class BaseRepository<TContext, TClass> : IBaseRepository where TContext : DbContext
 {
     private readonly TContext _context;
+    private readonly ILogger<TClass> _logger;
 
-    public BaseRepository(TContext context)
+    public BaseRepository(TContext context, ILogger<TClass> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public void Create<T>(T entity) where T : class
@@ -53,7 +57,7 @@ public class BaseRepository<TContext> : IBaseRepository where TContext : DbConte
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            _logger.LogCritical("An error occured while updating the database: {error}", e.Message);
             return false;
         }
     }
@@ -63,18 +67,22 @@ public class BaseRepository<TContext> : IBaseRepository where TContext : DbConte
         var entityEntries = _context.ChangeTracker.Entries();
 
         foreach (var entry in entityEntries)
-        {
-            if (entry.State == EntityState.Added)
-            {
-                var entity = entry.Entity as BaseEntity;
-                entity?.ChangeCreationDate(DateTimeOffset.UtcNow);
-            }
+            if (entry.Entity.GetType().BaseType == typeof(BaseEntity))
+                ChangeEntityAtributtes(entry);
+    }
 
-            if (entry.State == EntityState.Modified)
-            {
-                var entity = entry.Entity as BaseEntity;
-                entity?.ChangeUpdateDate(DateTimeOffset.UtcNow);
-            }
+    private static void ChangeEntityAtributtes(EntityEntry entry)
+    {
+        if (entry.State == EntityState.Added)
+        {
+            var entity = entry.Entity as BaseEntity;
+            entity?.ChangeCreationDate(DateTimeOffset.UtcNow);
+        }
+
+        if (entry.State == EntityState.Modified)
+        {
+            var entity = entry.Entity as BaseEntity;
+            entity?.ChangeUpdateDate(DateTimeOffset.UtcNow);
         }
     }
 }
