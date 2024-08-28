@@ -19,7 +19,7 @@ public abstract class BaseRepository<TContext, TClass> : IBaseRepository where T
         _logger = logger;
     }
 
-    public void Create<T>(T entity) where T : class
+    public void Add<T>(T entity) where T : class
     {
         _context.Add(entity);
     }

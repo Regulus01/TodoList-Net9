@@ -5,7 +5,7 @@ namespace Domain.Interface.Base;
 
 public interface IBaseRepository
 {
-    public void Create<T>(T entity) where T : class;
+    public void Add<T>(T entity) where T : class;
 
     public IEnumerable<T> Query<T>(Expression<Func<T, bool>> filter, 
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? includes = null) where T : class;

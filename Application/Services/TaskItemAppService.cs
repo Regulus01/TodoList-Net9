@@ -27,7 +27,7 @@ public class TaskItemAppService : ITaskItemAppService
         
         var entity = new TaskItem(dto.Title, dto.Description, dto.DueDate, dto.TaskListId);
 
-        _taskItemRepository.Create(entity);
+        _taskItemRepository.Add(entity);
 
         if (!_taskItemRepository.SaveChanges())
             throw new Exception("Erro ao cadastrar o TaskItem");

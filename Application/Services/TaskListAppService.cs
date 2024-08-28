@@ -20,12 +20,16 @@ public class TaskListAppService : ITaskListAppService
 
     public TaskListViewModel CreateTaskList(CreateTaskListDto taskListDto)
     {
-        var entityMap = _mapper.Map<TaskList>(taskListDto);
-        
-        _taskListRepository.Create(entityMap);
-        _taskListRepository.SaveChanges();
-        
-        return _mapper.Map<TaskListViewModel>(entityMap);
+        var entity = CreateTaskListEntity(taskListDto);
+
+        _taskListRepository.Add(entity);
+
+        if (!_taskListRepository.SaveChanges())
+        {
+            throw new Exception("Erro ao Cadastrar o TaskList");
+        }
+
+        return _mapper.Map<TaskListViewModel>(entity);
     }
 
     public TaskListViewModel UpdateTaskList(UpdateTaskListDto taskListDto)
@@ -34,17 +38,31 @@ public class TaskListAppService : ITaskListAppService
 
         if (entity == null)
             throw new ApplicationException("not found");
-        
-        UpdateTaskList(ref entity, taskListDto);
-        
+
+        entity.Update(taskListDto.Title);
+
         _taskListRepository.Update(entity);
-        _taskListRepository.SaveChanges();
-        
+
+        if (!_taskListRepository.SaveChanges())
+        {
+            throw new ApplicationException("Error updating task list");
+        }
+
         return _mapper.Map<TaskListViewModel>(entity);
     }
 
-    private void UpdateTaskList(ref TaskList oldtaskItem, UpdateTaskListDto newtaskItem)
+    private static TaskList CreateTaskListEntity(CreateTaskListDto taskListDto)
     {
-        oldtaskItem.SetTitle(newtaskItem.Title);
+        var taskItens = new List<TaskItem>();
+
+        if (taskListDto.TaskItems != null && taskListDto.TaskItems.Any())
+        {
+            taskItens.AddRange(taskListDto.TaskItems.Select(taskItemDto =>
+                new TaskItem(taskItemDto.Title, taskItemDto.Description, taskItemDto.DueDate)));
+        }
+
+        var entity = new TaskList(taskListDto.Title, taskItens);
+
+        return entity;
     }
 }

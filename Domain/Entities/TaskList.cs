@@ -18,7 +18,7 @@ public class TaskList : BaseEntity
         TaskItems = taskItems;
     }
     
-    public void SetTitle(string title)
+    public void Update(string title)
     {
         Title = title;
     }
