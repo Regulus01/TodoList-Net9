@@ -17,28 +17,38 @@ public class TaskItemAppService : ITaskItemAppService
         _taskItemRepository = taskItemRepository;
         _mapper = mapper;
     }
-    
-    public TaskItemViewModel CreateTaskItem(CreateTaskItemDto partialTaskItem)
+
+    public TaskItemViewModel CreateTaskItem(CreateTaskItemDto dto)
     {
-        var entityMap = _mapper.Map<TaskItem>(partialTaskItem);
+        var taskList = _taskItemRepository.Query<TaskList>(x => dto.TaskListId == x.Id).FirstOrDefault();
+
+        if (taskList == null)
+            throw new ApplicationException("TaskItem not found");
         
-        _taskItemRepository.Create(entityMap);
-        _taskItemRepository.SaveChanges();
-        
-        return _mapper.Map<TaskItemViewModel>(entityMap);
+        var entity = new TaskItem(dto.Title, dto.Description, dto.DueDate, dto.TaskListId);
+
+        _taskItemRepository.Create(entity);
+
+        if (!_taskItemRepository.SaveChanges())
+            throw new Exception("Erro ao cadastrar o TaskItem");
+
+        return _mapper.Map<TaskItemViewModel>(entity);
     }
 
     public TaskItemViewModel UpdateTaskItem(UpdateTaskItemDto taskItem)
     {
-        var entity = _taskItemRepository.Query<TaskItem>(x => x.Id == taskItem.Id);
+        var entity = _taskItemRepository.Query<TaskItem>(x => x.Id == taskItem.Id).FirstOrDefault();
 
         if (entity == null)
             throw new ApplicationException("Not found");
+
+        entity.Update(taskItem.Title, taskItem.Description, taskItem.DueDate, taskItem.IsCompleted);
+
+        _taskItemRepository.Update(entity);
         
-        var item = _mapper.Map<TaskItem>(taskItem);
-        
-        _taskItemRepository.Update(item);
-        
-        return _mapper.Map<TaskItemViewModel>(item);
+        if (!_taskItemRepository.SaveChanges())
+            throw new Exception("Erro ao cadastrar o TaskItem");
+
+        return _mapper.Map<TaskItemViewModel>(entity);
     }
 }

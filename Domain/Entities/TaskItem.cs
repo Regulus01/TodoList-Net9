@@ -28,8 +28,11 @@ public class TaskItem : BaseEntity
         TaskListId = taskListId;
     }
     
-    public void SetTitle(string title)
+    public void Update(string title, string description, DateTimeOffset? dueDate, bool isCompleted)
     {
         Title = title;
+        Description = description;
+        DueDate = dueDate;
+        IsCompleted = isCompleted;
     }
 }
