@@ -1,0 +1,13 @@
+﻿version: '3.1'
+
+services:
+  sqlServerDb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: always
+    ports:
+      - "1433:1433"
+    environment:
+      #O usuário é "sa"
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "4A@73he8"
+      MSSQL_PID: "Developer"
