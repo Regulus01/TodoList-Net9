@@ -2,7 +2,7 @@
 
 namespace Application.Dto.TaskList;
 
-public class UpdateTaskListTitleDto
+public class UpdateTaskListDto
 {
     [Required(ErrorMessage = "A Id is required")]
     public Guid Id { get; set; }

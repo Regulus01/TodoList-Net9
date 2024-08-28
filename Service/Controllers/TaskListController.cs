@@ -23,10 +23,10 @@ public class TaskListController : ControllerBase
         return Created(string.Empty, result);
     }
 
-    [HttpPatch]
-    public IActionResult UpdateTaskListTitle([FromBody] UpdateTaskListTitleDto taskItemDto)
+    [HttpPut]
+    public IActionResult UpdateTaskList([FromBody] UpdateTaskListDto taskItemDto)
     {
-        var result = _taskListAppService.UpdateTaskTitle(taskItemDto);
+        var result = _taskListAppService.UpdateTaskList(taskItemDto);
         
         return Ok(result);
     }

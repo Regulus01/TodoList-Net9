@@ -24,7 +24,7 @@ public abstract class BaseRepository<TContext, TClass> : IBaseRepository where T
         _context.Add(entity);
     }
 
-    public T Query<T>(Expression<Func<T, bool>> filter, 
+    public IEnumerable<T> Query<T>(Expression<Func<T, bool>> filter, 
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? includes = null) where T : class
     {
         var query = _context.Set<T>()
@@ -32,8 +32,10 @@ public abstract class BaseRepository<TContext, TClass> : IBaseRepository where T
         
         if(includes != null)
             query = includes(query);
+
+        var result = query.Where(filter).ToList();
         
-        return (T) query.Where(filter);
+        return result;
     }
 
     public void Update<T>(T entity) where T : class

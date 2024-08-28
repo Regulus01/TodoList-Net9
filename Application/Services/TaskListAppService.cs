@@ -1,5 +1,4 @@
-﻿using Application.Dto;
-using Application.Dto.TaskList;
+﻿using Application.Dto.TaskList;
 using Application.Interface;
 using Application.ViewModels;
 using AutoMapper;
@@ -19,9 +18,9 @@ public class TaskListAppService : ITaskListAppService
         _mapper = mapper;
     }
 
-    public TaskListViewModel CreateTaskList(CreateTaskListDto taskItem)
+    public TaskListViewModel CreateTaskList(CreateTaskListDto taskListDto)
     {
-        var entityMap = _mapper.Map<TaskList>(taskItem);
+        var entityMap = _mapper.Map<TaskList>(taskListDto);
         
         _taskListRepository.Create(entityMap);
         _taskListRepository.SaveChanges();
@@ -29,18 +28,23 @@ public class TaskListAppService : ITaskListAppService
         return _mapper.Map<TaskListViewModel>(entityMap);
     }
 
-    public TaskItemViewModel UpdateTaskTitle(UpdateTaskListTitleDto taskItem)
+    public TaskListViewModel UpdateTaskList(UpdateTaskListDto taskListDto)
     {
-        var entity = _taskListRepository.Query<TaskList>(x => x.Id == taskItem.Id);
+        var entity = _taskListRepository.Query<TaskList>(x => x.Id == taskListDto.Id).FirstOrDefault();
 
         if (entity == null)
             throw new ApplicationException("not found");
         
-        var entityMap = _mapper.Map<TaskList>(taskItem);
+        UpdateTaskList(ref entity, taskListDto);
         
-        _taskListRepository.Update(entityMap);
+        _taskListRepository.Update(entity);
         _taskListRepository.SaveChanges();
         
-        return _mapper.Map<TaskItemViewModel>(entityMap);
+        return _mapper.Map<TaskListViewModel>(entity);
+    }
+
+    private void UpdateTaskList(ref TaskList oldtaskItem, UpdateTaskListDto newtaskItem)
+    {
+        oldtaskItem.SetTitle(newtaskItem.Title);
     }
 }

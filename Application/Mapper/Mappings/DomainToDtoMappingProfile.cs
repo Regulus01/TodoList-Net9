@@ -11,5 +11,6 @@ public class DomainToDtoMappingProfile : Profile
     {
         CreateMap<TaskItem, CreatePartialTaskItemDto>().ReverseMap();
         CreateMap<TaskList, CreateTaskListDto>().ReverseMap();
+        CreateMap<UpdateTaskListDto, TaskList>().ReverseMap();
     }
 }
