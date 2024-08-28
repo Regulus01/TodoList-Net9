@@ -18,7 +18,7 @@ public class TaskItemAppService : ITaskItemAppService
         _mapper = mapper;
     }
     
-    public TaskItemViewModel CreateTaskItem(CreatePartialTaskItemDto partialTaskItem)
+    public TaskItemViewModel CreateTaskItem(CreateTaskItemDto partialTaskItem)
     {
         var entityMap = _mapper.Map<TaskItem>(partialTaskItem);
         

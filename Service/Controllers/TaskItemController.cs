@@ -20,7 +20,7 @@ public class TaskItemController : ControllerBase
     /// <param name="partialTaskItemDto"></param>
     /// <returns></returns>
     [HttpPost]
-    public IActionResult Create([FromBody] CreatePartialTaskItemDto partialTaskItemDto)
+    public IActionResult Create([FromBody] CreateTaskItemDto partialTaskItemDto)
     {
         var result = _taskItemAppService.CreateTaskItem(partialTaskItemDto);
         

@@ -5,6 +5,6 @@ namespace Application.Interface;
 
 public interface ITaskItemAppService
 {
-    TaskItemViewModel CreateTaskItem(CreatePartialTaskItemDto partialTaskItem);
+    TaskItemViewModel CreateTaskItem(CreateTaskItemDto partialTaskItem);
     TaskItemViewModel UpdateTaskItem(UpdateTaskItemDto taskItem);
 }
