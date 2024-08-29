@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using Infra.CrossCutting.IoC;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,10 +1,10 @@
 ﻿using Application.Dto.TaskList;
 using Application.Interface;
-using Application.ViewModels;
 using Application.ViewModels.TaskList;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interface;
+using Domain.Resourcers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services;
@@ -28,7 +28,7 @@ public class TaskListAppService : ITaskListAppService
 
         if (!_taskListRepository.SaveChanges())
         {
-            throw new Exception("Erro ao Cadastrar o TaskList");
+            throw new Exception(ErrorMessage.ERROR_TO_SAVE);
         }
 
         return _mapper.Map<TaskListViewModel>(entity);
@@ -38,9 +38,9 @@ public class TaskListAppService : ITaskListAppService
     {
         var taskList = _taskListRepository.Query<TaskList>(x => x.Id == id,
             y => y.Include(i => i.TaskItems)!).FirstOrDefault();
-        
+
         if (taskList == null)
-            throw new ApplicationException("not found");
+            throw new ApplicationException(ErrorMessage.NOT_FOUND);
 
         return _mapper.Map<TaskListViewModel>(taskList);
     }
@@ -50,7 +50,7 @@ public class TaskListAppService : ITaskListAppService
         var entity = _taskListRepository.Query<TaskList>(x => x.Id == taskListDto.Id).FirstOrDefault();
 
         if (entity == null)
-            throw new ApplicationException("not found");
+            throw new ApplicationException(ErrorMessage.NOT_FOUND);
 
         entity.Update(taskListDto.Title);
 
@@ -58,7 +58,7 @@ public class TaskListAppService : ITaskListAppService
 
         if (!_taskListRepository.SaveChanges())
         {
-            throw new ApplicationException("Error updating task list");
+            throw new ApplicationException(ErrorMessage.ERROR_TO_UPDATE);
         }
 
         return _mapper.Map<TaskListViewModel>(entity);
@@ -72,20 +72,20 @@ public class TaskListAppService : ITaskListAppService
         ValidateDeleteTaskListDto(taskList);
 
         _taskListRepository.Delete(taskList);
-        
+
         if (!_taskListRepository.SaveChanges())
         {
-            throw new Exception("Erro ao deletar o TaskList");
+            throw new Exception(ErrorMessage.ERROR_TO_DELETE);
         }
     }
 
     private void ValidateDeleteTaskListDto(TaskList taskList)
     {
         if (taskList == null)
-            throw new ApplicationException("not found");
+            throw new ApplicationException(ErrorMessage.NOT_FOUND);
 
         if (taskList.TaskItems != null)
-            throw new ApplicationException("task list have items");
+            throw new ApplicationException(ErrorMessage.ERROR_LINKED_TASKITEM);
     }
 
     private static TaskList CreateTaskListEntity(CreateTaskListDto taskListDto)

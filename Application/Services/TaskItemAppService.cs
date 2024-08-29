@@ -5,6 +5,7 @@ using Application.ViewModels.TaskItem;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interface;
+using Domain.Resourcers;
 
 namespace Application.Services;
 
@@ -24,14 +25,14 @@ public class TaskItemAppService : ITaskItemAppService
         var taskList = _taskItemRepository.Query<TaskList>(x => dto.TaskListId == x.Id).FirstOrDefault();
 
         if (taskList == null)
-            throw new ApplicationException("TaskItem not found");
+            throw new ApplicationException(ErrorMessage.NOT_FOUND);
         
         var entity = new TaskItem(dto.Title, dto.Description, dto.DueDate, dto.TaskListId);
 
         _taskItemRepository.Add(entity);
 
         if (!_taskItemRepository.SaveChanges())
-            throw new Exception("Erro ao cadastrar o TaskItem");
+            throw new Exception(ErrorMessage.ERROR_TO_SAVE);
 
         return _mapper.Map<TaskItemViewModel>(entity);
     }
@@ -41,14 +42,14 @@ public class TaskItemAppService : ITaskItemAppService
         var entity = _taskItemRepository.Query<TaskItem>(x => x.Id == taskItem.Id).FirstOrDefault();
 
         if (entity == null)
-            throw new ApplicationException("Not found");
+            throw new ApplicationException(ErrorMessage.NOT_FOUND);
 
         entity.Update(taskItem.Title, taskItem.Description, taskItem.DueDate, taskItem.IsCompleted);
 
         _taskItemRepository.Update(entity);
         
         if (!_taskItemRepository.SaveChanges())
-            throw new Exception("Erro ao cadastrar o TaskItem");
+            throw new Exception(ErrorMessage.ERROR_TO_UPDATE);
 
         return _mapper.Map<TaskItemViewModel>(entity);
     }
