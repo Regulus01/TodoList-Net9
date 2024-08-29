@@ -1,6 +1,7 @@
 ﻿using Application.Dto.TaskItem;
 using Application.Interface;
 using Application.ViewModels;
+using Application.ViewModels.TaskItem;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interface;

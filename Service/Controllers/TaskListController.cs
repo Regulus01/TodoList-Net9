@@ -1,4 +1,4 @@
-﻿using Application.Dto;
+﻿using System.ComponentModel.DataAnnotations;
 using Application.Dto.TaskList;
 using Application.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -18,16 +18,33 @@ public class TaskListController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] CreateTaskListDto taskListDto)
     {
-        var result = _taskListAppService.CreateTaskList(taskListDto);
-        
+        var result = _taskListAppService.Create(taskListDto);
+
         return Created(string.Empty, result);
     }
 
     [HttpPut]
-    public IActionResult UpdateTaskList([FromBody] UpdateTaskListDto taskItemDto)
+    public IActionResult Update([FromBody] UpdateTaskListDto taskItemDto)
     {
-        var result = _taskListAppService.UpdateTaskList(taskItemDto);
-        
+        var result = _taskListAppService.Update(taskItemDto);
+
         return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("{id:guid}")]
+    public IActionResult Get([FromRoute] Guid? id)
+    {
+        var result = _taskListAppService.Get(id);
+
+        return Ok(result);
+    }
+
+    [HttpDelete]
+    [Route("{id:guid}")]
+    public IActionResult Delete([FromRoute] Guid? id)
+    {
+        _taskListAppService.Delete(id);
+        return NoContent();
     }
 }

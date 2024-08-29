@@ -1,6 +1,6 @@
 ﻿using Application.ViewModels.Base;
 
-namespace Application.ViewModels;
+namespace Application.ViewModels.TaskItem;
 
 public class TaskItemViewModel : BaseEntityViewModel
 {
@@ -9,5 +9,4 @@ public class TaskItemViewModel : BaseEntityViewModel
     public DateTimeOffset? DueDate { get; set; }
     public bool IsCompleted { get; set; }
     public Guid TaskListId { get; set; }
-    public TaskListViewModel TaskList { get; set; }
 }

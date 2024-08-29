@@ -1,9 +1,11 @@
 ﻿using Application.Dto.TaskList;
 using Application.Interface;
 using Application.ViewModels;
+using Application.ViewModels.TaskList;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services;
 
@@ -18,7 +20,7 @@ public class TaskListAppService : ITaskListAppService
         _mapper = mapper;
     }
 
-    public TaskListViewModel CreateTaskList(CreateTaskListDto taskListDto)
+    public TaskListViewModel Create(CreateTaskListDto taskListDto)
     {
         var entity = CreateTaskListEntity(taskListDto);
 
@@ -32,7 +34,18 @@ public class TaskListAppService : ITaskListAppService
         return _mapper.Map<TaskListViewModel>(entity);
     }
 
-    public TaskListViewModel UpdateTaskList(UpdateTaskListDto taskListDto)
+    public TaskListViewModel Get(Guid? id)
+    {
+        var taskList = _taskListRepository.Query<TaskList>(x => x.Id == id,
+            y => y.Include(i => i.TaskItems)!).FirstOrDefault();
+        
+        if (taskList == null)
+            throw new ApplicationException("not found");
+
+        return _mapper.Map<TaskListViewModel>(taskList);
+    }
+
+    public TaskListViewModel Update(UpdateTaskListDto taskListDto)
     {
         var entity = _taskListRepository.Query<TaskList>(x => x.Id == taskListDto.Id).FirstOrDefault();
 
@@ -49,6 +62,30 @@ public class TaskListAppService : ITaskListAppService
         }
 
         return _mapper.Map<TaskListViewModel>(entity);
+    }
+
+    public void Delete(Guid? id)
+    {
+        var taskList = _taskListRepository.Query<TaskList>(x => x.Id == id,
+            y => y.Include(i => i.TaskItems)!).FirstOrDefault();
+
+        ValidateDeleteTaskListDto(taskList);
+
+        _taskListRepository.Delete(taskList);
+        
+        if (!_taskListRepository.SaveChanges())
+        {
+            throw new Exception("Erro ao deletar o TaskList");
+        }
+    }
+
+    private void ValidateDeleteTaskListDto(TaskList taskList)
+    {
+        if (taskList == null)
+            throw new ApplicationException("not found");
+
+        if (taskList.TaskItems != null)
+            throw new ApplicationException("task list have items");
     }
 
     private static TaskList CreateTaskListEntity(CreateTaskListDto taskListDto)

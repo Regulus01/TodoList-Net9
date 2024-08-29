@@ -1,6 +1,7 @@
 ﻿using Application.ViewModels.Base;
+using Application.ViewModels.TaskItem;
 
-namespace Application.ViewModels;
+namespace Application.ViewModels.TaskList;
 
 public class TaskListViewModel : BaseEntityViewModel
 {
