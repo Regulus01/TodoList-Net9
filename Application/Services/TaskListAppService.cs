@@ -5,6 +5,7 @@ using AutoMapper;
 using Domain.Entities;
 using Domain.Interface;
 using Domain.Resourcers;
+using Infra.CrossCutting.Notification.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services;
@@ -13,14 +14,16 @@ public class TaskListAppService : ITaskListAppService
 {
     private readonly ITaskListRepository _taskListRepository;
     private readonly IMapper _mapper;
+    private readonly INotify _notify;
 
-    public TaskListAppService(ITaskListRepository taskListRepository, IMapper mapper)
+    public TaskListAppService(ITaskListRepository taskListRepository, IMapper mapper, INotify notify)
     {
         _taskListRepository = taskListRepository;
         _mapper = mapper;
+        _notify = notify;
     }
 
-    public TaskListViewModel Create(CreateTaskListDto taskListDto)
+    public TaskListViewModel? Create(CreateTaskListDto taskListDto)
     {
         var entity = CreateTaskListEntity(taskListDto);
 
@@ -28,29 +31,36 @@ public class TaskListAppService : ITaskListAppService
 
         if (!_taskListRepository.SaveChanges())
         {
-            throw new Exception(ErrorMessage.ERROR_TO_SAVE);
+            _notify.NewNotification("Error", ErrorMessage.ERROR_TO_SAVE);
+            return null;
         }
-
+        
         return _mapper.Map<TaskListViewModel>(entity);
     }
 
-    public TaskListViewModel Get(Guid? id)
+    public TaskListViewModel? Get(Guid? id)
     {
         var taskList = _taskListRepository.Query<TaskList>(x => x.Id == id,
             y => y.Include(i => i.TaskItems)!).FirstOrDefault();
 
         if (taskList == null)
-            throw new ApplicationException(ErrorMessage.NOT_FOUND);
+        {
+            _notify.NewNotification("Error", ErrorMessage.NOT_FOUND);
+            return null;
+        }
 
         return _mapper.Map<TaskListViewModel>(taskList);
     }
 
-    public TaskListViewModel Update(UpdateTaskListDto taskListDto)
+    public TaskListViewModel? Update(UpdateTaskListDto taskListDto)
     {
         var entity = _taskListRepository.Query<TaskList>(x => x.Id == taskListDto.Id).FirstOrDefault();
 
         if (entity == null)
-            throw new ApplicationException(ErrorMessage.NOT_FOUND);
+        {
+            _notify.NewNotification("Error", ErrorMessage.NOT_FOUND);
+            return null;
+        }
 
         entity.Update(taskListDto.Title);
 
@@ -58,7 +68,8 @@ public class TaskListAppService : ITaskListAppService
 
         if (!_taskListRepository.SaveChanges())
         {
-            throw new ApplicationException(ErrorMessage.ERROR_TO_UPDATE);
+            _notify.NewNotification("Error", ErrorMessage.ERROR_TO_UPDATE);
+            return null;
         }
 
         return _mapper.Map<TaskListViewModel>(entity);
@@ -69,23 +80,40 @@ public class TaskListAppService : ITaskListAppService
         var taskList = _taskListRepository.Query<TaskList>(x => x.Id == id,
             y => y.Include(i => i.TaskItems)!).FirstOrDefault();
 
+        if (taskList == null)
+        {
+            _notify.NewNotification("Error", ErrorMessage.NOT_FOUND);
+            return;
+        }
+
         ValidateDeleteTaskListDto(taskList);
+
+        if (_notify.HasNotifications())
+        {
+            return;
+        }
 
         _taskListRepository.Delete(taskList);
 
         if (!_taskListRepository.SaveChanges())
         {
-            throw new Exception(ErrorMessage.ERROR_TO_DELETE);
+            _notify.NewNotification("Error", ErrorMessage.ERROR_TO_DELETE);
         }
     }
 
-    private void ValidateDeleteTaskListDto(TaskList taskList)
+    private void ValidateDeleteTaskListDto(TaskList? taskList)
     {
         if (taskList == null)
-            throw new ApplicationException(ErrorMessage.NOT_FOUND);
-
+        {
+            _notify.NewNotification("Error", ErrorMessage.NOT_FOUND);
+            return;
+        }
+        
         if (taskList.TaskItems != null)
-            throw new ApplicationException(ErrorMessage.ERROR_LINKED_TASKITEM);
+        {
+            _notify.NewNotification("Error", ErrorMessage.ERROR_LINKED_TASKITEM);
+            return;
+        }
     }
 
     private static TaskList CreateTaskListEntity(CreateTaskListDto taskListDto)

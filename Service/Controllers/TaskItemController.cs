@@ -1,15 +1,19 @@
-﻿using Application.Dto.TaskItem;
+﻿using System.Net;
+using Application.Dto.TaskItem;
 using Application.Interface;
+using Application.ViewModels.TaskItem;
+using Infra.CrossCutting.Notification.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Service.Controllers.Base;
 
 namespace Service.Controllers;
 
 [Route("api/v1/TaskItem")]
-public class TaskItemController : ControllerBase
+public class TaskItemController : BaseController
 {
     private readonly ITaskItemAppService _taskItemAppService;
 
-    public TaskItemController(ITaskItemAppService taskItemAppService)
+    public TaskItemController(ITaskItemAppService taskItemAppService, INotify notify) : base(notify)
     {
         _taskItemAppService = taskItemAppService;
     }
@@ -23,8 +27,8 @@ public class TaskItemController : ControllerBase
     public IActionResult Create([FromBody] CreateTaskItemDto partialTaskItemDto)
     {
         var result = _taskItemAppService.CreateTaskItem(partialTaskItemDto);
-        
-        return Created(string.Empty, result);
+
+        return ApiResponse(HttpStatusCode.Created, result);
     }
 
     [HttpPut]
@@ -32,6 +36,6 @@ public class TaskItemController : ControllerBase
     {
         var result = _taskItemAppService.UpdateTaskItem(taskItemDto);
         
-        return Ok(result);
+        return ApiResponse(HttpStatusCode.OK, result);
     }
 }

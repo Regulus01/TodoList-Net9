@@ -1,16 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
 using Application.Dto.TaskList;
 using Application.Interface;
+using Application.ViewModels.TaskList;
+using Infra.CrossCutting.Notification.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Service.Controllers.Base;
 
 namespace Service.Controllers;
 
 [Route("api/v1/TaskList")]
-public class TaskListController : ControllerBase
+public class TaskListController : BaseController
 {
     private readonly ITaskListAppService _taskListAppService;
 
-    public TaskListController(ITaskListAppService taskListAppService)
+    public TaskListController(ITaskListAppService taskListAppService, INotify notify) : base(notify)
     {
         _taskListAppService = taskListAppService;
     }
@@ -20,7 +24,7 @@ public class TaskListController : ControllerBase
     {
         var result = _taskListAppService.Create(taskListDto);
 
-        return Created(string.Empty, result);
+        return ApiResponse(HttpStatusCode.Created, result);
     }
 
     [HttpPut]
@@ -28,7 +32,7 @@ public class TaskListController : ControllerBase
     {
         var result = _taskListAppService.Update(taskItemDto);
 
-        return Ok(result);
+        return ApiResponse(HttpStatusCode.OK, result);
     }
 
     [HttpGet]
@@ -37,7 +41,10 @@ public class TaskListController : ControllerBase
     {
         var result = _taskListAppService.Get(id);
 
-        return Ok(result);
+        if (result == null)
+            return ApiResponse(HttpStatusCode.NotFound);
+        
+        return ApiResponse(HttpStatusCode.OK, result);
     }
 
     [HttpDelete]
@@ -45,6 +52,7 @@ public class TaskListController : ControllerBase
     public IActionResult Delete([FromRoute] Guid? id)
     {
         _taskListAppService.Delete(id);
-        return NoContent();
+        
+        return ApiResponse(HttpStatusCode.NoContent);
     }
 }

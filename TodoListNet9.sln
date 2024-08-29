@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{77C988
 		Docker\docker-compose.yml = Docker\docker-compose.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.CrossCutting", "Infra.CrossCutting\Infra.CrossCutting.csproj", "{485CCAEE-C348-4F67-8C96-3C490A99B107}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,5 +49,9 @@ Global
 		{911D5CE0-44E5-4522-8B2A-C8ADECA858A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{911D5CE0-44E5-4522-8B2A-C8ADECA858A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{911D5CE0-44E5-4522-8B2A-C8ADECA858A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{485CCAEE-C348-4F67-8C96-3C490A99B107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{485CCAEE-C348-4F67-8C96-3C490A99B107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{485CCAEE-C348-4F67-8C96-3C490A99B107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{485CCAEE-C348-4F67-8C96-3C490A99B107}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

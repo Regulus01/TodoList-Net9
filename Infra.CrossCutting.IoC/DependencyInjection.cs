@@ -3,6 +3,8 @@ using Application.Interface;
 using Application.Mapper;
 using Application.Services;
 using Domain.Interface;
+using Infra.CrossCutting.Notification.Bus;
+using Infra.CrossCutting.Notification.Interface;
 using Infra.Data.Context;
 using Infra.Data.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +23,8 @@ public static class DependencyInjection
         AddMapper(services);
         AddAppServices(services);
         AddSwagger(services);
+        
+        services.AddScoped<INotify, Notify>();
     }
 
     private static void AddSwagger(IServiceCollection services)
