@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <RootNamespace>Service</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,8 +13,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Infra.CrossCutting.IoC\Infra.CrossCutting.IoC.csproj" />
-      <ProjectReference Include="..\Infra.CrossCutting\Infra.CrossCutting.csproj" />
+      <ProjectReference Include="..\TodoListNet9.Infra.CrossCutting.IoC\TodoListNet9.Infra.CrossCutting.IoC.csproj" />
+      <ProjectReference Include="..\TodoListNet9.Infra.CrossCutting\TodoListNet9.Infra.CrossCutting.csproj" />
     </ItemGroup>
 
 </Project>

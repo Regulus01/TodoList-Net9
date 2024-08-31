@@ -4,6 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>Infra.Data</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,7 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\TodoListNet9.Domain\TodoListNet9.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>

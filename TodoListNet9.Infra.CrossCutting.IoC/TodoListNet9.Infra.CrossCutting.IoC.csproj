@@ -4,6 +4,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>Infra.CrossCutting.IoC</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,10 +12,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Application\Application.csproj" />
-      <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\Infra.CrossCutting\Infra.CrossCutting.csproj" />
-      <ProjectReference Include="..\Infra.Data\Infra.Data.csproj" />
+      <ProjectReference Include="..\TodoListNet9.Application\TodoListNet9.Application.csproj" />
+      <ProjectReference Include="..\TodoListNet9.Domain\TodoListNet9.Domain.csproj" />
+      <ProjectReference Include="..\TodoListNet9.Infra.CrossCutting\TodoListNet9.Infra.CrossCutting.csproj" />
+      <ProjectReference Include="..\TodoListNet9.Infra.Data\TodoListNet9.Infra.Data.csproj" />
     </ItemGroup>
 
     <ItemGroup>

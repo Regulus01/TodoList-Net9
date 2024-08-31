@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <RootNamespace>Application</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,8 +13,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\Infra.CrossCutting\Infra.CrossCutting.csproj" />
+      <ProjectReference Include="..\TodoListNet9.Domain\TodoListNet9.Domain.csproj" />
+      <ProjectReference Include="..\TodoListNet9.Infra.CrossCutting\TodoListNet9.Infra.CrossCutting.csproj" />
     </ItemGroup>
 
 </Project>

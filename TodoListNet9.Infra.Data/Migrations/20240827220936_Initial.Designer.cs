@@ -25,7 +25,7 @@ namespace Infra.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.TaskItem", b =>
+            modelBuilder.Entity("TodoListNet9.Domain.Entities.TaskItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,7 +71,7 @@ namespace Infra.Data.Migrations
                     b.ToTable("TaskItem", "ToDoList");
                 });
 
-            modelBuilder.Entity("Domain.Entities.TaskList", b =>
+            modelBuilder.Entity("TodoListNet9.Domain.Entities.TaskList", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -97,9 +97,9 @@ namespace Infra.Data.Migrations
                     b.ToTable("TaskLists", "ToDoList");
                 });
 
-            modelBuilder.Entity("Domain.Entities.TaskItem", b =>
+            modelBuilder.Entity("TodoListNet9.Domain.Entities.TaskItem", b =>
                 {
-                    b.HasOne("Domain.Entities.TaskList", "TaskList")
+                    b.HasOne("TodoListNet9.Domain.Entities.TaskList", "TaskList")
                         .WithMany("TaskItems")
                         .HasForeignKey("TaskListId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -108,7 +108,7 @@ namespace Infra.Data.Migrations
                     b.Navigation("TaskList");
                 });
 
-            modelBuilder.Entity("Domain.Entities.TaskList", b =>
+            modelBuilder.Entity("TodoListNet9.Domain.Entities.TaskList", b =>
                 {
                     b.Navigation("TaskItems");
                 });

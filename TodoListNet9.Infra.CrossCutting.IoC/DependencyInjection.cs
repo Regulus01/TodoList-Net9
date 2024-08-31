@@ -31,11 +31,11 @@ public static class DependencyInjection
     {
         services.AddSwaggerGen(options =>
         {
-            var xmlFileService = $"{Assembly.Load("Service").GetName().Name}.xml";
+            var xmlFileService = $"{Assembly.Load("TodoListNet9.Service").GetName().Name}.xml";
             var xmlPathService = Path.Combine(AppContext.BaseDirectory, xmlFileService);
             options.IncludeXmlComments(xmlPathService);
             
-            var xmlFileApplication = $"{Assembly.Load("Application").GetName().Name}.xml";
+            var xmlFileApplication = $"{Assembly.Load("TodoListNet9.Application").GetName().Name}.xml";
             var xmlPathApplication = Path.Combine(AppContext.BaseDirectory, xmlFileApplication);
             options.IncludeXmlComments(xmlPathApplication);
             
