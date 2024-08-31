@@ -25,15 +25,34 @@ public class TaskListAppService : ITaskListAppService
     }
 
     /// <inheritdoc />
-    public TaskListViewModel? Create(CreateTaskListDto taskListDto)
+    public TaskListViewModel? Create(CreateTaskListDto? taskListDto)
     {
+        if (taskListDto == null)
+        {
+            _notify.NewNotification(ErrorMessage.NULL_FIELDS.Code, ErrorMessage.NULL_FIELDS.Message);
+            return null;
+        }
+        
         var entity = CreateTaskListEntity(taskListDto);
+
+        if (_notify.HasNotifications())
+        {
+            return null;
+        }
+        
+        var validationResult = entity.Validate();
+
+        if (validationResult.isValid)
+        {
+            _notify.NewNotification(validationResult.erros);
+            return null;
+        }
 
         _taskListRepository.Add(entity);
 
         if (!_taskListRepository.SaveChanges())
         {
-            _notify.NewNotification("Error", ErrorMessage.ERROR_TO_SAVE);
+            _notify.NewNotification(ErrorMessage.SAVE_DATA.Code, ErrorMessage.SAVE_DATA.Message);
             return null;
         }
         
@@ -48,7 +67,7 @@ public class TaskListAppService : ITaskListAppService
 
         if (taskList == null)
         {
-            _notify.NewNotification("Error", ErrorMessage.NOT_FOUND);
+            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
             return null;
         }
 
@@ -62,17 +81,25 @@ public class TaskListAppService : ITaskListAppService
 
         if (entity == null)
         {
-            _notify.NewNotification("Error", ErrorMessage.NOT_FOUND);
+            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
             return null;
         }
-
+        
         entity.Update(taskListDto.Title);
 
+        var validationResult = entity.Validate();
+
+        if (validationResult.isValid)
+        {
+            _notify.NewNotification(validationResult.erros);
+            return null;
+        }
+        
         _taskListRepository.Update(entity);
 
         if (!_taskListRepository.SaveChanges())
         {
-            _notify.NewNotification("Error", ErrorMessage.ERROR_TO_UPDATE);
+            _notify.NewNotification(ErrorMessage.UPDATE_DATA.Code, ErrorMessage.UPDATE_DATA.Message);
             return null;
         }
 
@@ -87,7 +114,7 @@ public class TaskListAppService : ITaskListAppService
 
         if (taskList == null)
         {
-            _notify.NewNotification("Error", ErrorMessage.NOT_FOUND);
+            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
             return;
         }
 
@@ -102,7 +129,7 @@ public class TaskListAppService : ITaskListAppService
 
         if (!_taskListRepository.SaveChanges())
         {
-            _notify.NewNotification("Error", ErrorMessage.ERROR_TO_DELETE);
+            _notify.NewNotification(ErrorMessage.DELETE_DATA.Code, ErrorMessage.DELETE_DATA.Message);
         }
     }
 
@@ -110,25 +137,37 @@ public class TaskListAppService : ITaskListAppService
     {
         if (taskList == null)
         {
-            _notify.NewNotification("Error", ErrorMessage.NOT_FOUND);
+            _notify.NewNotification(ErrorMessage.DELETE_DATA.Code, ErrorMessage.DELETE_DATA.Message);
             return;
         }
         
         if (taskList.TaskItems != null)
         {
-            _notify.NewNotification("Error", ErrorMessage.ERROR_LINKED_TASKITEM);
+            _notify.NewNotification(ErrorMessage.LINKED_TASKITEM.Code, ErrorMessage.LINKED_TASKITEM.Message);
             return;
         }
     }
 
-    private static TaskList CreateTaskListEntity(CreateTaskListDto taskListDto)
+    private TaskList CreateTaskListEntity(CreateTaskListDto taskListDto)
     {
         var taskItens = new List<TaskItem>();
 
         if (taskListDto.TaskItems != null && taskListDto.TaskItems.Any())
         {
-            taskItens.AddRange(taskListDto.TaskItems.Select(taskItemDto =>
-                new TaskItem(taskItemDto.Title, taskItemDto.Description, taskItemDto.DueDate)));
+            foreach (var taskItemDto in taskListDto.TaskItems)
+            {
+                var taskItem = new TaskItem(taskItemDto.Title, taskItemDto.Description, taskItemDto.DueDate);
+                
+                var validationResult = taskItem.Validate();
+
+                if (validationResult.isValid)
+                {
+                    _notify.NewNotification(validationResult.erros);
+                    continue;
+                }
+                
+                taskItens.Add(taskItem);
+            }
         }
 
         var entity = new TaskList(taskListDto.Title, taskItens);

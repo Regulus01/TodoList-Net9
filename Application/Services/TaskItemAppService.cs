@@ -1,6 +1,5 @@
 ﻿using Application.Dto.TaskItem;
 using Application.Interface;
-using Application.ViewModels;
 using Application.ViewModels.TaskItem;
 using AutoMapper;
 using Domain.Entities;
@@ -25,23 +24,37 @@ public class TaskItemAppService : ITaskItemAppService
     }
 
     /// <inheritdoc />
-    public TaskItemViewModel? CreateTaskItem(CreateTaskItemDto dto)
+    public TaskItemViewModel? CreateTaskItem(CreateTaskItemDto? dto)
     {
-        var taskList = _taskItemRepository.Query<TaskList>(x => dto.TaskListId == x.Id).FirstOrDefault();
-
-        if (taskList == null)
+        if (dto == null)
         {
-            _notify.NewNotification("Error", ErrorMessage.NOT_FOUND);
+            _notify.NewNotification(ErrorMessage.NULL_FIELDS.Code, ErrorMessage.NULL_FIELDS.Message);
             return null;
         }
         
+        var taskListExists = _taskItemRepository.Query<TaskList>(x => x.Id == dto.TaskListId).Any();
+
+        if (!taskListExists)
+        {
+            _notify.NewNotification(ErrorMessage.TASK_LIST_NOT_EXIST.Code, ErrorMessage.TASK_LIST_NOT_EXIST.Message);
+            return null;
+        }
+            
         var entity = new TaskItem(dto.Title, dto.Description, dto.DueDate, dto.TaskListId);
 
+        var validationResult = entity.Validate();
+
+        if (validationResult.isValid)
+        {
+            _notify.NewNotification(validationResult.erros);
+            return null;
+        }
+        
         _taskItemRepository.Add(entity);
 
         if (!_taskItemRepository.SaveChanges())
         {
-            _notify.NewNotification("Error", ErrorMessage.ERROR_TO_SAVE);
+            _notify.NewNotification(ErrorMessage.SAVE_DATA.Code, ErrorMessage.SAVE_DATA.Message);
             return null;
         }
 
@@ -54,15 +67,26 @@ public class TaskItemAppService : ITaskItemAppService
         var entity = _taskItemRepository.Query<TaskItem>(x => x.Id == taskItem.Id).FirstOrDefault();
 
         if (entity == null)
-            throw new ApplicationException(ErrorMessage.NOT_FOUND);
+        {
+            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
+            return null;
+        }
 
         entity.Update(taskItem.Title, taskItem.Description, taskItem.DueDate, taskItem.IsCompleted);
+
+        var validationResult = entity.Validate();
+
+        if (validationResult.isValid)
+        {
+            _notify.NewNotification(validationResult.erros);
+            return null;
+        }
 
         _taskItemRepository.Update(entity);
         
         if (!_taskItemRepository.SaveChanges())
         {
-            _notify.NewNotification("Error", ErrorMessage.ERROR_TO_UPDATE);
+            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
             return null;
         }
 

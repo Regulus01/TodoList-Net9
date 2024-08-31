@@ -21,4 +21,12 @@ public class Notify : INotify
     {
         _notifications.Add(new NotificationModel(key, message));
     }
+
+    public void NewNotification(IDictionary<string, string> erros)
+    {
+        foreach (var erro in erros)
+        {
+            _notifications.Add(new NotificationModel(erro.Key, erro.Value));   
+        }
+    }
 }

@@ -10,7 +10,7 @@ public interface ITaskItemAppService
     /// </summary>
     /// <param name="dto">data for creation</param>
     /// <returns>Task list has been created</returns>
-    TaskItemViewModel? CreateTaskItem(CreateTaskItemDto dto);
+    TaskItemViewModel? CreateTaskItem(CreateTaskItemDto? dto);
     
     /// <summary>
     /// Update one task item

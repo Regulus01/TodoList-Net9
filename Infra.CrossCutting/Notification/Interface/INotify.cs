@@ -5,5 +5,6 @@ public interface INotify
 {
     bool HasNotifications();
     IEnumerable<Notification> GetNotifications();
-    void NewNotification(string key, string message); 
+    void NewNotification(string key, string message);
+    void NewNotification(IDictionary<string, string> erros);
 }

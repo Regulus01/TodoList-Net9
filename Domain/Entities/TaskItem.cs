@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Base;
+using Domain.Resourcers;
 
 namespace Domain.Entities;
 
@@ -34,5 +35,22 @@ public class TaskItem : BaseEntity
         Description = description;
         DueDate = dueDate;
         IsCompleted = isCompleted;
+    }
+
+    public override (bool isValid, IDictionary<string, string> erros) Validate()
+    {
+        var erros = new Dictionary<string, string>();
+
+        if (string.IsNullOrWhiteSpace(Title))
+        {
+            erros.Add(ErrorMessage.TITLE_REQUIRED.Code, ErrorMessage.TITLE_REQUIRED.Message);
+        }
+
+        if (DueDate.HasValue && DueDate.Value.Date < DateTimeOffset.UtcNow.Date)
+        {
+            erros.Add(ErrorMessage.DUE_DATE_IN_PAST.Code, ErrorMessage.DUE_DATE_IN_PAST.Message);
+        }
+
+        return (erros.Count > 0, erros);
     }
 }

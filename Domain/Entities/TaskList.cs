@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Base;
+using Domain.Resourcers;
 
 namespace Domain.Entities;
 
@@ -21,5 +22,17 @@ public class TaskList : BaseEntity
     public void Update(string title)
     {
         Title = title;
+    }
+    
+    public override (bool isValid, IDictionary<string, string> erros) Validate()
+    {
+        var erros = new Dictionary<string, string>();
+
+        if (string.IsNullOrWhiteSpace(Title))
+        {
+            erros.Add(ErrorMessage.TITLE_REQUIRED.Code, ErrorMessage.TITLE_REQUIRED.Message);
+        }
+
+        return (erros.Count > 0, erros);
     }
 }

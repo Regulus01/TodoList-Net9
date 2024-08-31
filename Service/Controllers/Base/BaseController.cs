@@ -20,7 +20,6 @@ public class BaseController : ControllerBase
         {
             return GenerateSucessResponseForStatusCode(statusCode, result);
         }
-            
 
         return GenerateErrorResponseForStatusCode(statusCode);
     }

@@ -15,4 +15,6 @@ public abstract class BaseEntity
     {
         UpdateDate = date;
     }
+
+    public abstract (bool isValid, IDictionary<string, string> erros) Validate();
 }

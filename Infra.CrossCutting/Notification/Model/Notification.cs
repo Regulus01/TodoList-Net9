@@ -5,14 +5,14 @@ namespace Infra.CrossCutting.Notification.Model;
 public class Notification
 {
     [JsonPropertyOrder(-2)]
-    public string Key { get; }
+    public string Code { get; }
     
     [JsonPropertyOrder(-1)]
-    public string Value { get; }
+    public string Message { get; }
 
-    public Notification(string key, string value)
+    public Notification(string code, string message)
     {
-        Key = key;
-        Value = value;
+        Code = code;
+        Message = message;
     }
 }
