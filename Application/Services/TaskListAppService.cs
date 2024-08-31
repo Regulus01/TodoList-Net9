@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services;
 
+/// <inheritdoc />
 public class TaskListAppService : ITaskListAppService
 {
     private readonly ITaskListRepository _taskListRepository;
@@ -23,6 +24,7 @@ public class TaskListAppService : ITaskListAppService
         _notify = notify;
     }
 
+    /// <inheritdoc />
     public TaskListViewModel? Create(CreateTaskListDto taskListDto)
     {
         var entity = CreateTaskListEntity(taskListDto);
@@ -38,6 +40,7 @@ public class TaskListAppService : ITaskListAppService
         return _mapper.Map<TaskListViewModel>(entity);
     }
 
+    /// <inheritdoc />
     public TaskListViewModel? Get(Guid? id)
     {
         var taskList = _taskListRepository.Query<TaskList>(x => x.Id == id,
@@ -52,6 +55,7 @@ public class TaskListAppService : ITaskListAppService
         return _mapper.Map<TaskListViewModel>(taskList);
     }
 
+    /// <inheritdoc />
     public TaskListViewModel? Update(UpdateTaskListDto taskListDto)
     {
         var entity = _taskListRepository.Query<TaskList>(x => x.Id == taskListDto.Id).FirstOrDefault();
@@ -75,6 +79,7 @@ public class TaskListAppService : ITaskListAppService
         return _mapper.Map<TaskListViewModel>(entity);
     }
 
+    /// <inheritdoc />
     public void Delete(Guid? id)
     {
         var taskList = _taskListRepository.Query<TaskList>(x => x.Id == id,

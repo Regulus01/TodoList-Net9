@@ -10,6 +10,7 @@ using Infra.CrossCutting.Notification.Interface;
 
 namespace Application.Services;
 
+/// <inheritdoc />
 public class TaskItemAppService : ITaskItemAppService
 {
     private readonly ITaskItemRepository _taskItemRepository;
@@ -23,6 +24,7 @@ public class TaskItemAppService : ITaskItemAppService
         _notify = notify;
     }
 
+    /// <inheritdoc />
     public TaskItemViewModel? CreateTaskItem(CreateTaskItemDto dto)
     {
         var taskList = _taskItemRepository.Query<TaskList>(x => dto.TaskListId == x.Id).FirstOrDefault();
@@ -46,6 +48,7 @@ public class TaskItemAppService : ITaskItemAppService
         return _mapper.Map<TaskItemViewModel>(entity);
     }
 
+    /// <inheritdoc />
     public TaskItemViewModel? UpdateTaskItem(UpdateTaskItemDto taskItem)
     {
         var entity = _taskItemRepository.Query<TaskItem>(x => x.Id == taskItem.Id).FirstOrDefault();
