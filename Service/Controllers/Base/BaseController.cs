@@ -14,10 +14,13 @@ public class BaseController : ControllerBase
         _notify = notify;
     }
 
-    protected IActionResult ApiResponse(HttpStatusCode statusCode = HttpStatusCode.OK, object? result = null)
+    protected new IActionResult Response(HttpStatusCode statusCode = HttpStatusCode.OK, object? result = null)
     {
         if (!_notify.HasNotifications())
+        {
             return GenerateSucessResponseForStatusCode(statusCode, result);
+        }
+            
 
         return GenerateErrorResponseForStatusCode(statusCode);
     }
@@ -30,7 +33,7 @@ public class BaseController : ControllerBase
         {
             return NotFound(new ErrorResponse(notifications.ToList()));
         }
-        
+
         return BadRequest(new ErrorResponse(notifications.ToList()));
     }
 
@@ -45,9 +48,7 @@ public class BaseController : ControllerBase
         {
             return NoContent();
         }
-        
+
         return Ok(new SucessResponse(result));
     }
 }
-
-
