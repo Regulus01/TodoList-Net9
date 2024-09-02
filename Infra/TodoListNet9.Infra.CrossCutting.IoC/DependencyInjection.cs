@@ -31,7 +31,7 @@ public static class DependencyInjection
     {
         services.AddSwaggerGen(options =>
         {
-            var xmlFileService = $"{Assembly.Load("TodoListNet9.Service").GetName().Name}.xml";
+            var xmlFileService = $"{Assembly.Load("TodoListNet9.Api").GetName().Name}.xml";
             var xmlPathService = Path.Combine(AppContext.BaseDirectory, xmlFileService);
             options.IncludeXmlComments(xmlPathService);
             

@@ -13,8 +13,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TodoListNet9.Infra.CrossCutting.IoC\TodoListNet9.Infra.CrossCutting.IoC.csproj" />
-      <ProjectReference Include="..\TodoListNet9.Infra.CrossCutting\TodoListNet9.Infra.CrossCutting.csproj" />
+        <ProjectReference Include="..\..\Application\TodoListNet9.Application\TodoListNet9.Application.csproj"/>
+        <ProjectReference Include="..\..\Infra\TodoListNet9.Infra.CrossCutting.IoC\TodoListNet9.Infra.CrossCutting.IoC.csproj"/>
+        <ProjectReference Include="..\..\Infra\TodoListNet9.Infra.CrossCutting\TodoListNet9.Infra.CrossCutting.csproj"/>
     </ItemGroup>
-
 </Project>

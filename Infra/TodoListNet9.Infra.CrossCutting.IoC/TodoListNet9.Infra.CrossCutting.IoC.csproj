@@ -12,16 +12,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TodoListNet9.Application\TodoListNet9.Application.csproj" />
-      <ProjectReference Include="..\TodoListNet9.Domain\TodoListNet9.Domain.csproj" />
+      <ProjectReference Include="..\..\Application\TodoListNet9.Application\TodoListNet9.Application.csproj" />
+      <ProjectReference Include="..\..\Domain\TodoListNet9.Domain\TodoListNet9.Domain.csproj" />
       <ProjectReference Include="..\TodoListNet9.Infra.CrossCutting\TodoListNet9.Infra.CrossCutting.csproj" />
       <ProjectReference Include="..\TodoListNet9.Infra.Data\TodoListNet9.Infra.Data.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.EntityFrameworkCore.SqlServer">
-        <HintPath>C:\Users\jsous\.nuget\packages\microsoft.entityframeworkcore.sqlserver\9.0.0-preview.7.24405.3\lib\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
-      </Reference>
     </ItemGroup>
 
 </Project>
