@@ -20,7 +20,7 @@ public class TaskListAppService : ITaskListAppService
     public TaskListAppService(ITaskListRepository taskListRepository, IMapper mapper, INotify notify)
     {
         _taskListRepository = taskListRepository;
-        _mapper = mapper;
+        _mapper = mapper; 
         _notify = notify;
     }
 
