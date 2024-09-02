@@ -37,7 +37,7 @@ public class TaskItem : BaseEntity
         IsCompleted = isCompleted;
     }
 
-    public override (bool isValid, IDictionary<string, string> erros) Validate()
+    public override (bool IsValid, IDictionary<string, string> Erros) Validate()
     {
         var erros = new Dictionary<string, string>();
 
@@ -51,6 +51,6 @@ public class TaskItem : BaseEntity
             erros.Add(ErrorMessage.DUE_DATE_IN_PAST.Code, ErrorMessage.DUE_DATE_IN_PAST.Message);
         }
 
-        return (erros.Count > 0, erros);
+        return (erros.Count == 0, erros);
     }
 }

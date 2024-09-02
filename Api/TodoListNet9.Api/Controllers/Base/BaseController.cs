@@ -3,7 +3,7 @@ using Infra.CrossCutting.Notification.Interface;
 using Infra.CrossCutting.Notification.Response;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Service.Controllers.Base;
+namespace Api.Controllers.Base;
 
 public class BaseController : ControllerBase
 {

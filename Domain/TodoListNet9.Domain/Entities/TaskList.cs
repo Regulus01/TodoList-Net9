@@ -13,7 +13,7 @@ public class TaskList : BaseEntity
         Title = title;
     }
     
-    public TaskList(string title, IEnumerable<TaskItem> taskItems)
+    public TaskList(string title, IEnumerable<TaskItem>? taskItems)
     {
         Title = title;
         TaskItems = taskItems;
@@ -24,7 +24,7 @@ public class TaskList : BaseEntity
         Title = title;
     }
     
-    public override (bool isValid, IDictionary<string, string> erros) Validate()
+    public override (bool IsValid, IDictionary<string, string> Erros) Validate()
     {
         var erros = new Dictionary<string, string>();
 
@@ -33,6 +33,6 @@ public class TaskList : BaseEntity
             erros.Add(ErrorMessage.TITLE_REQUIRED.Code, ErrorMessage.TITLE_REQUIRED.Message);
         }
 
-        return (erros.Count > 0, erros);
+        return (erros.Count == 0, erros);
     }
 }

@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Net;
+﻿using System.Net;
+using Api.Controllers.Base;
 using Application.Dto.TaskList;
 using Application.Interface;
 using Application.ViewModels.TaskList;
 using Infra.CrossCutting.Notification.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Service.Controllers.Base;
 
-namespace Service.Controllers;
+namespace Api.Controllers;
 
 [Route("api/v1/TaskList")]
 public class TaskListController : BaseController

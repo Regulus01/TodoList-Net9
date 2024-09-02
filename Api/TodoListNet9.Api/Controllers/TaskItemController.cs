@@ -1,13 +1,12 @@
 ﻿using System.Net;
+using Api.Controllers.Base;
 using Application.Dto.TaskItem;
 using Application.Interface;
-using Application.ViewModels.TaskItem;
 using Application.ViewModels.TaskList;
 using Infra.CrossCutting.Notification.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Service.Controllers.Base;
 
-namespace Service.Controllers;
+namespace Api.Controllers;
 
 [Route("api/v1/TaskItem")]
 public class TaskItemController : BaseController

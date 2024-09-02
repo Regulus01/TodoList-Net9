@@ -20,8 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Application\" />
-      <Folder Include="Domain\" />
+      <ProjectReference Include="..\..\Domain\TodoListNet9.Domain\TodoListNet9.Domain.csproj" />
     </ItemGroup>
 
 </Project>

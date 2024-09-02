@@ -42,9 +42,9 @@ public class TaskListAppService : ITaskListAppService
         
         var validationResult = entity.Validate();
 
-        if (validationResult.isValid)
+        if (!validationResult.IsValid)
         {
-            _notify.NewNotification(validationResult.erros);
+            _notify.NewNotification(validationResult.Erros);
             return null;
         }
 
@@ -89,9 +89,9 @@ public class TaskListAppService : ITaskListAppService
 
         var validationResult = entity.Validate();
 
-        if (validationResult.isValid)
+        if (!validationResult.IsValid)
         {
-            _notify.NewNotification(validationResult.erros);
+            _notify.NewNotification(validationResult.Erros);
             return null;
         }
         
@@ -160,9 +160,9 @@ public class TaskListAppService : ITaskListAppService
                 
                 var validationResult = taskItem.Validate();
 
-                if (validationResult.isValid)
+                if (!validationResult.IsValid)
                 {
-                    _notify.NewNotification(validationResult.erros);
+                    _notify.NewNotification(validationResult.Erros);
                     continue;
                 }
                 

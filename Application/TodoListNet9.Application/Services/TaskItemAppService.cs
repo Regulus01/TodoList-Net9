@@ -44,9 +44,9 @@ public class TaskItemAppService : ITaskItemAppService
 
         var validationResult = entity.Validate();
 
-        if (validationResult.isValid)
+        if (!validationResult.IsValid)
         {
-            _notify.NewNotification(validationResult.erros);
+            _notify.NewNotification(validationResult.Erros);
             return null;
         }
         
@@ -76,9 +76,9 @@ public class TaskItemAppService : ITaskItemAppService
 
         var validationResult = entity.Validate();
 
-        if (validationResult.isValid)
+        if (!validationResult.IsValid)
         {
-            _notify.NewNotification(validationResult.erros);
+            _notify.NewNotification(validationResult.Erros);
             return null;
         }
 
