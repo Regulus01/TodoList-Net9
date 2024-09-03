@@ -48,7 +48,7 @@ public abstract class BaseRepository<TContext, TClass> : IBaseRepository where T
         _context.Remove(entity);
     }
 
-    public bool SaveChanges(CancellationToken cancellationToken = default)
+    public bool SaveChanges()
     {
         UpdateAuditDates();
         

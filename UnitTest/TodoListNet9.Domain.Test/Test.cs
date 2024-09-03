@@ -19,7 +19,7 @@ public class Test
     } 
     
     [Fact(DisplayName = "TaskItemValidate - Task item with errors - Failed")]
-    public void TaskItemValidate_TaskItemWithErros_Failed()
+    public void TaskItemValidate_TaskItemWithErros_Failure()
     {
         //Arrange
         var oldDate = DateTime.Now.AddDays(-1);
@@ -53,7 +53,7 @@ public class Test
     }
     
     [Fact(DisplayName = "TaskItemValidate - Validate with errors - Failed")]
-    public void TaskListValidate_ValidateWithErrors_Failed()
+    public void TaskListValidate_ValidateWithErrors_Failure()
     {
         //Arrange
         var taskList = Factory.GenerateTaskList(" ");

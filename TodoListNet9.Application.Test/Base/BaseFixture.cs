@@ -16,10 +16,21 @@ public abstract class BaseFixture
               .Returns(hasNotification);
     }
 
-    public void SetupSaveChanges<T>() where T : class, IBaseRepository
+    public void SetupSaveChanges<T>(bool success = true) where T : class, IBaseRepository
     {
         Mocker.GetMock<T>()
-            .Setup(x => x.SaveChanges(It.IsAny<CancellationToken>()))
-            .Returns(true);
+            .Setup(x => x.SaveChanges())
+            .Returns(success);
+    }
+    
+    public void NeverNotifications()
+    {
+        Mocker.GetMock<INotify>()
+            .Verify(x => x.NewNotification(It.IsAny<IDictionary<string, string>>()),
+                Times.Never);
+
+        Mocker.GetMock<INotify>()
+            .Verify(x => x.NewNotification(It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never);
     }
 }
