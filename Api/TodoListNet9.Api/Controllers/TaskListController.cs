@@ -77,8 +77,8 @@ public class TaskListController : BaseController
     /// <remarks>
     ///     A task list cannot be deleted with have task items associated
     /// </remarks>
-    /// <param name="id">Id for tak list</param>
-    [ProducesResponseType(typeof(TaskListViewModel), StatusCodes.Status204NoContent)]
+    /// <param name="id">Task list id</param>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpDelete]

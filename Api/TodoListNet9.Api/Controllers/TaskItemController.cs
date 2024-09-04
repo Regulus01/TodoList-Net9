@@ -2,6 +2,7 @@
 using Api.Controllers.Base;
 using Application.Dto.TaskItem;
 using Application.Interface;
+using Application.ViewModels.TaskItem;
 using Application.ViewModels.TaskList;
 using Infra.CrossCutting.Notification.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -47,5 +48,41 @@ public class TaskItemController : BaseController
         var result = _taskItemAppService.UpdateTaskItem(taskItemDto);
         
         return Response(HttpStatusCode.OK, result);
+    }
+    
+    /// <summary>
+    /// Get task item for id
+    /// </summary>
+    /// <param name="id">Task item Id</param>
+    /// <returns>Task item</returns>
+    [ProducesResponseType(typeof(TaskItemViewModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpGet]
+    [Route("{id:guid}")]
+    public IActionResult Get([FromRoute] Guid? id)
+    {
+        var result = _taskItemAppService.Get(id);
+
+        if (result == null)
+            return Response(HttpStatusCode.NotFound);
+        
+        return Response(HttpStatusCode.OK, result);
+    }
+
+    /// <summary>
+    /// Delete one task item for id
+    /// </summary>
+    /// <param name="id">Task item id</param>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [HttpDelete]
+    [Route("{id:guid}")]
+    public IActionResult Delete([FromRoute] Guid? id)
+    {
+        _taskItemAppService.Delete(id);
+        
+        return Response(HttpStatusCode.NoContent);
     }
 }

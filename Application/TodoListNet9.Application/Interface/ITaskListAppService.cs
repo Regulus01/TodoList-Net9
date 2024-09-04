@@ -4,6 +4,9 @@ using Application.ViewModels.TaskList;
 
 namespace Application.Interface;
 
+/// <summary>
+/// Task list interface
+/// </summary>
 public interface ITaskListAppService
 {
     /// <summary>

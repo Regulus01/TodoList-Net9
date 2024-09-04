@@ -92,4 +92,37 @@ public class TaskItemAppService : ITaskItemAppService
 
         return _mapper.Map<TaskItemViewModel>(entity);
     }
+    
+    /// <inheritdoc />
+    public TaskItemViewModel? Get(Guid? id)
+    {
+        var taskItem = _taskItemRepository.Query<TaskItem>(x => x.Id == id).FirstOrDefault();
+
+        if (taskItem == null)
+        {
+            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
+            return null;
+        }
+
+        return _mapper.Map<TaskItemViewModel>(taskItem);
+    }
+    
+    /// <inheritdoc />
+    public void Delete(Guid? id)
+    {
+        var taskItem = _taskItemRepository.Query<TaskItem>(x => x.Id == id).FirstOrDefault();
+
+        if (taskItem == null)
+        {
+            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
+            return;
+        }
+        
+        _taskItemRepository.Delete(taskItem);
+
+        if (!_taskItemRepository.SaveChanges())
+        {
+            _notify.NewNotification(ErrorMessage.DELETE_DATA.Code, ErrorMessage.DELETE_DATA.Message);
+        }
+    }
 }
