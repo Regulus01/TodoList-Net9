@@ -11,7 +11,6 @@ using Domain.Interface.Command.Handler;
 using Domain.Interface.Notification;
 using Domain.Interface.Repository;
 using Infra.CrossCutting.Command;
-using Infra.CrossCutting.Command.Interface.Handler;
 using Infra.CrossCutting.Notification;
 using Infra.Data.Context;
 using Infra.Data.Repository;

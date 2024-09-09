@@ -1,7 +1,6 @@
 ﻿using Application.Dto.TaskItem;
 using Application.Dto.TaskList;
 using Domain.Commands.Events;
-using Domain.Entities;
 
 namespace TodoListNet9.Application.Test.TaskList;
 

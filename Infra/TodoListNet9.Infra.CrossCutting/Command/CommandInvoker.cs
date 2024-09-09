@@ -1,7 +1,6 @@
 ﻿using Domain.Interface.Command;
 using Domain.Interface.Command.Handler;
 using Domain.Interface.Command.Marking;
-using Infra.CrossCutting.Command.Interface;
 using Infra.CrossCutting.Command.Interface.Handler;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -2,11 +2,9 @@
 using Domain.Commands;
 using Domain.Commands.Events;
 using Domain.Entities;
-using Domain.Interface;
 using Domain.Interface.Command.Handler;
 using Domain.Interface.Repository;
 using Domain.Resourcers;
-using Infra.CrossCutting.Command.Interface.Handler;
 using DomainBus = Domain.Bus.Bus;
 
 namespace Domain.Handler;

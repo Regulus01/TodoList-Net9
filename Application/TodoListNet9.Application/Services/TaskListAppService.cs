@@ -6,10 +6,8 @@ using Domain.Bus;
 using Domain.Commands;
 using Domain.Commands.Events;
 using Domain.Entities;
-using Domain.Interface;
 using Domain.Interface.Repository;
 using Domain.Resourcers;
-using Infra.CrossCutting.Command.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services;

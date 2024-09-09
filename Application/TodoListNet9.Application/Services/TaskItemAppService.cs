@@ -4,7 +4,6 @@ using Application.ViewModels.TaskItem;
 using AutoMapper;
 using Domain.Bus;
 using Domain.Entities;
-using Domain.Interface;
 using Domain.Interface.Repository;
 using Domain.Resourcers;
 

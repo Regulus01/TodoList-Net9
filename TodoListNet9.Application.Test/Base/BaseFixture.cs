@@ -1,9 +1,7 @@
 ﻿using Domain.Interface.Base;
 using Domain.Interface.Command;
-using Domain.Interface.Command.Handler;
 using Domain.Interface.Command.Marking;
 using Domain.Interface.Notification;
-using Infra.CrossCutting.Command.Interface.Handler;
 using Moq;
 using Moq.AutoMock;
 
