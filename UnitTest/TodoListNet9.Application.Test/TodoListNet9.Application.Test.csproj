@@ -14,11 +14,10 @@
         <PackageReference Include="xunit" Version="2.9.0" />
         <PackageReference Include="xunit.runner.visualstudio" Version="3.0.0-pre.30"/>
     </ItemGroup>
-    
 
     <ItemGroup>
-      <ProjectReference Include="..\Application\TodoListNet9.Application\TodoListNet9.Application.csproj" />
-      <ProjectReference Include="..\Infra\TodoListNet9.Infra.CrossCutting\TodoListNet9.Infra.CrossCutting.csproj" />
+      <ProjectReference Include="..\..\Application\TodoListNet9.Application\TodoListNet9.Application.csproj" />
+      <ProjectReference Include="..\..\Domain\TodoListNet9.Domain\TodoListNet9.Domain.csproj" />
     </ItemGroup>
 
 </Project>
