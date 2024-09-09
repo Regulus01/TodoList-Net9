@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{77C98846-D087-4645-A671-DE0B017B132B}"
-	ProjectSection(SolutionItems) = preProject
-		Docker\docker-compose.yml = Docker\docker-compose.yml
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{FE45E1E0-DDD6-410C-8033-74D500288E01}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{63C91577-0448-4677-994C-F2FDB9DCF203}"
