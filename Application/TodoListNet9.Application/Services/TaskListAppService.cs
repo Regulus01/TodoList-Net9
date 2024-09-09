@@ -2,11 +2,12 @@
 using Application.Interface;
 using Application.ViewModels.TaskList;
 using AutoMapper;
+using Domain.Bus;
 using Domain.Commands;
 using Domain.Commands.Events;
 using Domain.Entities;
 using Domain.Interface;
-using Domain.Interface.Command.Interface;
+using Domain.Interface.Repository;
 using Domain.Resourcers;
 using Infra.CrossCutting.Command.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -18,15 +19,13 @@ public class TaskListAppService : ITaskListAppService
 {
     private readonly ITaskListRepository _taskListRepository;
     private readonly IMapper _mapper;
-    private readonly INotify _notify;
-    private readonly ICommandInvoker _command;
+    private readonly Bus _bus;
 
-    public TaskListAppService(ITaskListRepository taskListRepository, IMapper mapper, INotify notify, ICommandInvoker command)
+    public TaskListAppService(ITaskListRepository taskListRepository, IMapper mapper, Bus bus)
     {
         _taskListRepository = taskListRepository;
-        _mapper = mapper; 
-        _notify = notify;
-        _command = command;
+        _mapper = mapper;
+        _bus = bus;
     }
 
     /// <inheritdoc />
@@ -34,13 +33,13 @@ public class TaskListAppService : ITaskListAppService
     {
         if (taskListDto == null)
         {
-            _notify.NewNotification(ErrorMessage.NULL_FIELDS.Code, ErrorMessage.NULL_FIELDS.Message);
+            _bus.Notify.NewNotification(ErrorMessage.NULL_FIELDS.Code, ErrorMessage.NULL_FIELDS.Message);
             return null;
         }
         
         var command = _mapper.Map<CreateTaskListCommand>(taskListDto);
         
-        var result = _command.Execute<CreateTaskListCommand, CreateTaskListEvent?>(command);
+        var result = _bus.Command.Execute<CreateTaskListCommand, CreateTaskListEvent?>(command);
         
         return _mapper.Map<TaskListViewModel>(result);
     }
@@ -53,7 +52,7 @@ public class TaskListAppService : ITaskListAppService
 
         if (taskList == null)
         {
-            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
+            _bus.Notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
             return null;
         }
 
@@ -67,7 +66,7 @@ public class TaskListAppService : ITaskListAppService
 
         if (entity == null)
         {
-            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
+            _bus.Notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
             return null;
         }
         
@@ -77,7 +76,7 @@ public class TaskListAppService : ITaskListAppService
 
         if (!validationResult.IsValid)
         {
-            _notify.NewNotification(validationResult.Erros);
+            _bus.Notify.NewNotification(validationResult.Erros);
             return null;
         }
         
@@ -85,7 +84,7 @@ public class TaskListAppService : ITaskListAppService
 
         if (!_taskListRepository.SaveChanges())
         {
-            _notify.NewNotification(ErrorMessage.UPDATE_DATA.Code, ErrorMessage.UPDATE_DATA.Message);
+            _bus.Notify.NewNotification(ErrorMessage.UPDATE_DATA.Code, ErrorMessage.UPDATE_DATA.Message);
             return null;
         }
 
@@ -100,13 +99,13 @@ public class TaskListAppService : ITaskListAppService
 
         if (taskList == null)
         {
-            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
+            _bus.Notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
             return;
         }
 
         ValidateDeleteTaskListDto(taskList);
 
-        if (_notify.HasNotifications())
+        if (_bus.Notify.HasNotifications())
         {
             return;
         }
@@ -115,7 +114,7 @@ public class TaskListAppService : ITaskListAppService
 
         if (!_taskListRepository.SaveChanges())
         {
-            _notify.NewNotification(ErrorMessage.DELETE_DATA.Code, ErrorMessage.DELETE_DATA.Message);
+            _bus.Notify.NewNotification(ErrorMessage.DELETE_DATA.Code, ErrorMessage.DELETE_DATA.Message);
         }
     }
 
@@ -123,13 +122,13 @@ public class TaskListAppService : ITaskListAppService
     {
         if (taskList == null)
         {
-            _notify.NewNotification(ErrorMessage.DELETE_DATA.Code, ErrorMessage.DELETE_DATA.Message);
+            _bus.Notify.NewNotification(ErrorMessage.DELETE_DATA.Code, ErrorMessage.DELETE_DATA.Message);
             return;
         }
         
         if (taskList.TaskItems != null)
         {
-            _notify.NewNotification(ErrorMessage.LINKED_TASKITEM.Code, ErrorMessage.LINKED_TASKITEM.Message);
+            _bus.Notify.NewNotification(ErrorMessage.LINKED_TASKITEM.Code, ErrorMessage.LINKED_TASKITEM.Message);
             return;
         }
     }

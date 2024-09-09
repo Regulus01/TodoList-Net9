@@ -1,7 +1,7 @@
-﻿using Domain.Interface.Command.Interface;
+﻿using Domain.Interface.Notification;
 using NotificationModel = Domain.Notification.Model.Notification;
 
-namespace Infra.CrossCutting.Notification.Bus;
+namespace Infra.CrossCutting.Notification;
 
 public class Notify : INotify
 {

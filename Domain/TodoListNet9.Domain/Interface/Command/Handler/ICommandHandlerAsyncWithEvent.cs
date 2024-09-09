@@ -1,6 +1,6 @@
 ﻿using Domain.Interface.Command.Marking;
 
-namespace Infra.CrossCutting.Command.Interface.Handler;
+namespace Domain.Interface.Command.Handler;
 
 public interface ICommandHandlerWithEvent<in TCommand, out TEvent> where TCommand : ICommand 
                                                                    where TEvent : IEvent?

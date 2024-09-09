@@ -1,5 +1,9 @@
 ﻿using Domain.Interface.Base;
-using Domain.Interface.Command.Interface;
+using Domain.Interface.Command;
+using Domain.Interface.Command.Handler;
+using Domain.Interface.Command.Marking;
+using Domain.Interface.Notification;
+using Infra.CrossCutting.Command.Interface.Handler;
 using Moq;
 using Moq.AutoMock;
 
@@ -32,5 +36,12 @@ public abstract class BaseFixture
         Mocker.GetMock<INotify>()
             .Verify(x => x.NewNotification(It.IsAny<string>(), It.IsAny<string>()),
                 Times.Never);
+    }
+    
+    public void SetupCommandWithEvent<TCommand, TEvent>(TEvent eventResponse) where TCommand : ICommand where TEvent : IEvent?
+    {
+        Mocker.GetMock<ICommandInvoker>()
+              .Setup(x => x.Execute<TCommand, TEvent>(It.IsAny<TCommand>()))
+              .Returns(eventResponse);
     }
 }

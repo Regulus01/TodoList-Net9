@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Domain.Interface.Command.Interface;
+using Domain.Interface.Notification;
 using Infra.CrossCutting.Notification.Response;
 using Microsoft.AspNetCore.Mvc;
 

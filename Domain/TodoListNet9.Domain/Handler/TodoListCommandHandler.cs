@@ -3,31 +3,33 @@ using Domain.Commands;
 using Domain.Commands.Events;
 using Domain.Entities;
 using Domain.Interface;
-using Domain.Interface.Command.Interface;
+using Domain.Interface.Command.Handler;
+using Domain.Interface.Repository;
 using Domain.Resourcers;
 using Infra.CrossCutting.Command.Interface.Handler;
+using DomainBus = Domain.Bus.Bus;
 
-namespace Domain.Handle;
+namespace Domain.Handler;
 
 public class TodoListCommandHandler : ICommandHandlerWithEvent<CreateTaskListCommand, CreateTaskListEvent?>
 {
     private readonly ITaskListRepository _taskListRepository;
-    private readonly INotify _notify;
     private readonly IMapper _mapper;
+    private readonly DomainBus _bus;
 
 
-    public TodoListCommandHandler(ITaskListRepository taskListRepository, INotify notify, IMapper mapper)
+    public TodoListCommandHandler(ITaskListRepository taskListRepository, IMapper mapper, DomainBus bus)
     {
         _taskListRepository = taskListRepository;
-        _notify = notify;
         _mapper = mapper;
+        _bus = bus;
     }
     
     public CreateTaskListEvent? Handle(CreateTaskListCommand command)
     {
         var entity = CreateTaskListEntity(command);
-
-        if (_notify.HasNotifications())
+        
+        if (_bus.Notify.HasNotifications())
         {
             return null;
         }
@@ -36,7 +38,7 @@ public class TodoListCommandHandler : ICommandHandlerWithEvent<CreateTaskListCom
 
         if (!validationResult.IsValid)
         {
-            _notify.NewNotification(validationResult.Erros);
+            _bus.Notify.NewNotification(validationResult.Erros);
             return null;
         }
 
@@ -44,7 +46,7 @@ public class TodoListCommandHandler : ICommandHandlerWithEvent<CreateTaskListCom
 
         if (!_taskListRepository.SaveChanges())
         {
-            _notify.NewNotification(ErrorMessage.SAVE_DATA.Code, ErrorMessage.SAVE_DATA.Message);
+            _bus.Notify.NewNotification(ErrorMessage.SAVE_DATA.Code, ErrorMessage.SAVE_DATA.Message);
             return null;
         }
 
@@ -65,7 +67,7 @@ public class TodoListCommandHandler : ICommandHandlerWithEvent<CreateTaskListCom
 
                 if (!validationResult.IsValid)
                 {
-                    _notify.NewNotification(validationResult.Erros);
+                    _bus.Notify.NewNotification(validationResult.Erros);
                     continue;
                 }
                 

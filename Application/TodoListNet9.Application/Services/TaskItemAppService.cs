@@ -2,9 +2,10 @@
 using Application.Interface;
 using Application.ViewModels.TaskItem;
 using AutoMapper;
+using Domain.Bus;
 using Domain.Entities;
 using Domain.Interface;
-using Domain.Interface.Command.Interface;
+using Domain.Interface.Repository;
 using Domain.Resourcers;
 
 namespace Application.Services;
@@ -14,13 +15,13 @@ public class TaskItemAppService : ITaskItemAppService
 {
     private readonly ITaskItemRepository _taskItemRepository;
     private readonly IMapper _mapper;
-    private readonly INotify _notify;
+    private readonly Bus _bus;
 
-    public TaskItemAppService(ITaskItemRepository taskItemRepository, IMapper mapper, INotify notify)
+    public TaskItemAppService(ITaskItemRepository taskItemRepository, IMapper mapper, Bus bus)
     {
         _taskItemRepository = taskItemRepository;
         _mapper = mapper;
-        _notify = notify;
+        _bus = bus;
     }
 
     /// <inheritdoc />
@@ -28,7 +29,7 @@ public class TaskItemAppService : ITaskItemAppService
     {
         if (dto == null)
         {
-            _notify.NewNotification(ErrorMessage.NULL_FIELDS.Code, ErrorMessage.NULL_FIELDS.Message);
+            _bus.Notify.NewNotification(ErrorMessage.NULL_FIELDS.Code, ErrorMessage.NULL_FIELDS.Message);
             return null;
         }
         
@@ -36,7 +37,7 @@ public class TaskItemAppService : ITaskItemAppService
 
         if (!taskListExists)
         {
-            _notify.NewNotification(ErrorMessage.TASK_LIST_NOT_EXIST.Code, ErrorMessage.TASK_LIST_NOT_EXIST.Message);
+            _bus.Notify.NewNotification(ErrorMessage.TASK_LIST_NOT_EXIST.Code, ErrorMessage.TASK_LIST_NOT_EXIST.Message);
             return null;
         }
             
@@ -46,7 +47,7 @@ public class TaskItemAppService : ITaskItemAppService
 
         if (!validationResult.IsValid)
         {
-            _notify.NewNotification(validationResult.Erros);
+            _bus.Notify.NewNotification(validationResult.Erros);
             return null;
         }
         
@@ -54,7 +55,7 @@ public class TaskItemAppService : ITaskItemAppService
 
         if (!_taskItemRepository.SaveChanges())
         {
-            _notify.NewNotification(ErrorMessage.SAVE_DATA.Code, ErrorMessage.SAVE_DATA.Message);
+            _bus.Notify.NewNotification(ErrorMessage.SAVE_DATA.Code, ErrorMessage.SAVE_DATA.Message);
             return null;
         }
 
@@ -68,7 +69,7 @@ public class TaskItemAppService : ITaskItemAppService
 
         if (entity == null)
         {
-            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
+            _bus.Notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
             return null;
         }
 
@@ -78,7 +79,7 @@ public class TaskItemAppService : ITaskItemAppService
 
         if (!validationResult.IsValid)
         {
-            _notify.NewNotification(validationResult.Erros);
+            _bus.Notify.NewNotification(validationResult.Erros);
             return null;
         }
 
@@ -86,7 +87,7 @@ public class TaskItemAppService : ITaskItemAppService
         
         if (!_taskItemRepository.SaveChanges())
         {
-            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
+            _bus.Notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
             return null;
         }
 
@@ -100,7 +101,7 @@ public class TaskItemAppService : ITaskItemAppService
 
         if (taskItem == null)
         {
-            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
+            _bus.Notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
             return null;
         }
 
@@ -114,7 +115,7 @@ public class TaskItemAppService : ITaskItemAppService
 
         if (taskItem == null)
         {
-            _notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
+            _bus.Notify.NewNotification(ErrorMessage.DATA_NOT_FOUND.Code, ErrorMessage.DATA_NOT_FOUND.Message);
             return;
         }
         
@@ -122,7 +123,7 @@ public class TaskItemAppService : ITaskItemAppService
 
         if (!_taskItemRepository.SaveChanges())
         {
-            _notify.NewNotification(ErrorMessage.DELETE_DATA.Code, ErrorMessage.DELETE_DATA.Message);
+            _bus.Notify.NewNotification(ErrorMessage.DELETE_DATA.Code, ErrorMessage.DELETE_DATA.Message);
         }
     }
 }

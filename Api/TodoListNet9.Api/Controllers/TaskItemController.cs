@@ -3,7 +3,7 @@ using Application.Dto.TaskItem;
 using Application.Interface;
 using Application.ViewModels.TaskItem;
 using Application.ViewModels.TaskList;
-using Domain.Interface.Command.Interface;
+using Domain.Interface.Notification;
 using Infra.CrossCutting.Controller;
 using Microsoft.AspNetCore.Mvc;
 

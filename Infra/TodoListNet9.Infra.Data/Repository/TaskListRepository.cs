@@ -1,4 +1,5 @@
 ﻿using Domain.Interface;
+using Domain.Interface.Repository;
 using Infra.Data.Context;
 using Infra.Data.Repository.Base;
 using Microsoft.Extensions.Logging;

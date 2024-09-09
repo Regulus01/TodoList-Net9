@@ -1,4 +1,4 @@
-﻿namespace Domain.Interface.Command.Interface;
+﻿namespace Domain.Interface.Notification;
 using NotificationDomain = Domain.Notification.Model.Notification;
 
 public interface INotify

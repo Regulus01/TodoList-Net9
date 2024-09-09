@@ -2,15 +2,17 @@
 using Application.Interface;
 using Application.Mapper;
 using Application.Services;
+using Domain.Bus;
 using Domain.Commands;
 using Domain.Commands.Events;
-using Domain.Handle;
-using Domain.Interface;
-using Domain.Interface.Command.Interface;
+using Domain.Handler;
+using Domain.Interface.Command;
+using Domain.Interface.Command.Handler;
+using Domain.Interface.Notification;
+using Domain.Interface.Repository;
 using Infra.CrossCutting.Command;
-using Infra.CrossCutting.Command.Interface;
 using Infra.CrossCutting.Command.Interface.Handler;
-using Infra.CrossCutting.Notification.Bus;
+using Infra.CrossCutting.Notification;
 using Infra.Data.Context;
 using Infra.Data.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -24,16 +26,20 @@ public static class DependencyInjection
 {
     public static void AddInfraestructure(this IServiceCollection services, IConfiguration configuration)
     {
-        //Bus
-        services.AddScoped<ICommandInvoker, CommandInvoker>();
-        services.AddScoped<INotify, Notify>();
-        
+        AddBus(services);
         AddRepository(services);
         AddDbContext(services, configuration);
         AddMapper(services);
         AddAppServices(services);
         AddSwagger(services);
         RegisterCommands(services);
+    }
+
+    private static void AddBus(IServiceCollection services)
+    {
+        services.AddScoped<ICommandInvoker, CommandInvoker>();
+        services.AddScoped<INotify, Notify>();
+        services.AddScoped<Bus>();
     }
 
     private static void RegisterCommands(IServiceCollection services)

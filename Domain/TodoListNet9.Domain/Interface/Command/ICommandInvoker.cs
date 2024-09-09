@@ -1,6 +1,6 @@
 ﻿using Domain.Interface.Command.Marking;
 
-namespace Infra.CrossCutting.Command.Interface;
+namespace Domain.Interface.Command;
 
 public interface ICommandInvoker
 {

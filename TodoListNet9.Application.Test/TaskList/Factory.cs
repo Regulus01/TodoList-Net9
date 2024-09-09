@@ -1,5 +1,6 @@
 ﻿using Application.Dto.TaskItem;
 using Application.Dto.TaskList;
+using Domain.Commands.Events;
 using Domain.Entities;
 
 namespace TodoListNet9.Application.Test.TaskList;
@@ -25,6 +26,14 @@ public static class Factory
             Title = title, 
             TaskItems = taskItems
             
+        };
+    }
+
+    public static CreateTaskListEvent GenerateCreateTaskListEvent(string title = "Title")
+    {
+        return new CreateTaskListEvent
+        {
+            Title = title
         };
     }
 }

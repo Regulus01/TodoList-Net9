@@ -14,7 +14,7 @@ public interface ITaskListAppService
     /// </summary>
     /// <param name="taskListDto">Data for creation</param>
     /// <returns>Task list has been created</returns>
-    TaskListViewModel? Create(CreateTaskListDto taskListDto);
+    TaskListViewModel? Create(CreateTaskListDto? taskListDto);
     
     /// <summary>
     /// Get task list for id
