@@ -1,8 +1,5 @@
 ﻿using Application.Mapper;
 using Application.Services;
-using AutoMapper;
-using Infra.CrossCutting.Notification.Interface;
-using Moq;
 using Moq.AutoMock;
 using TodoListNet9.Application.Test.Base;
 

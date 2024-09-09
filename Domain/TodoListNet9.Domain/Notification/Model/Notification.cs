@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Infra.CrossCutting.Notification.Model;
+namespace Domain.Notification.Model;
 
 public class Notification
 {

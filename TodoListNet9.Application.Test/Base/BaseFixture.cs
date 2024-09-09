@@ -1,5 +1,5 @@
 ﻿using Domain.Interface.Base;
-using Infra.CrossCutting.Notification.Interface;
+using Domain.Interface.Command.Interface;
 using Moq;
 using Moq.AutoMock;
 

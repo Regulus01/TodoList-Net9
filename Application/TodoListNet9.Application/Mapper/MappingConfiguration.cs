@@ -10,6 +10,8 @@ public class MappingConfiguration
         return new MapperConfiguration(config =>
         {
             config.AddProfile<DomainToViewModelMappingProfile>(); 
+            config.AddProfile<DtoToDomainMappingProfile>(); 
+            config.AddProfile<DomainToEventMappingProfile>(); 
         });
     }
 }

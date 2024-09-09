@@ -1,9 +1,9 @@
 ﻿using System.Net;
-using Infra.CrossCutting.Notification.Interface;
+using Domain.Interface.Command.Interface;
 using Infra.CrossCutting.Notification.Response;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Controllers.Base;
+namespace Infra.CrossCutting.Controller;
 
 public class BaseController : ControllerBase
 {

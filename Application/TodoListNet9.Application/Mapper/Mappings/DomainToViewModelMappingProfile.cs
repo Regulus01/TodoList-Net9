@@ -1,7 +1,7 @@
-﻿using Application.ViewModels;
-using Application.ViewModels.TaskItem;
+﻿using Application.ViewModels.TaskItem;
 using Application.ViewModels.TaskList;
 using AutoMapper;
+using Domain.Commands.Events;
 using Domain.Entities;
 
 namespace Application.Mapper.Mappings;
@@ -12,6 +12,8 @@ public class DomainToViewModelMappingProfile : Profile
     {
         CreateMap<TaskItem, TaskItemViewModel>().ReverseMap();
         
-        CreateMap<TaskList, TaskListViewModel>().ReverseMap();
+        //Events
+        CreateMap<CreateTaskListEvent, TaskListViewModel>();
+        CreateMap<CreateTaskItemEvent, TaskItemViewModel>();
     }
 }

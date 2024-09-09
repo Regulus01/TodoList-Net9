@@ -4,8 +4,8 @@ using Application.ViewModels.TaskItem;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interface;
+using Domain.Interface.Command.Interface;
 using Domain.Resourcers;
-using Infra.CrossCutting.Notification.Interface;
 
 namespace Application.Services;
 

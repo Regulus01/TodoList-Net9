@@ -2,9 +2,15 @@
 using Application.Interface;
 using Application.Mapper;
 using Application.Services;
+using Domain.Commands;
+using Domain.Commands.Events;
+using Domain.Handle;
 using Domain.Interface;
+using Domain.Interface.Command.Interface;
+using Infra.CrossCutting.Command;
+using Infra.CrossCutting.Command.Interface;
+using Infra.CrossCutting.Command.Interface.Handler;
 using Infra.CrossCutting.Notification.Bus;
-using Infra.CrossCutting.Notification.Interface;
 using Infra.Data.Context;
 using Infra.Data.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -18,13 +24,21 @@ public static class DependencyInjection
 {
     public static void AddInfraestructure(this IServiceCollection services, IConfiguration configuration)
     {
+        //Bus
+        services.AddScoped<ICommandInvoker, CommandInvoker>();
+        services.AddScoped<INotify, Notify>();
+        
         AddRepository(services);
         AddDbContext(services, configuration);
         AddMapper(services);
         AddAppServices(services);
         AddSwagger(services);
-        
-        services.AddScoped<INotify, Notify>();
+        RegisterCommands(services);
+    }
+
+    private static void RegisterCommands(IServiceCollection services)
+    {
+        services.AddTransient<ICommandHandlerWithEvent<CreateTaskListCommand, CreateTaskListEvent>, TodoListCommandHandler>();
     }
 
     private static void AddSwagger(IServiceCollection services)

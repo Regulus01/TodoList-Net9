@@ -8,7 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="13.0.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.7.24405.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Interface\Command\" />
+      <Folder Include="Notification\" />
     </ItemGroup>
 
 </Project>

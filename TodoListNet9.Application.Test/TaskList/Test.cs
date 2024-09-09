@@ -1,8 +1,8 @@
 ﻿using Application.Dto.TaskItem;
 using Application.Interface;
 using Domain.Interface;
+using Domain.Interface.Command.Interface;
 using Domain.Resourcers;
-using Infra.CrossCutting.Notification.Interface;
 using Moq;
 using Xunit;
 using TaskListDomain = Domain.Entities.TaskList;

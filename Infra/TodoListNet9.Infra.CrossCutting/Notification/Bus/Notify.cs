@@ -1,5 +1,5 @@
-﻿using Infra.CrossCutting.Notification.Interface;
-using NotificationModel = Infra.CrossCutting.Notification.Model.Notification;
+﻿using Domain.Interface.Command.Interface;
+using NotificationModel = Domain.Notification.Model.Notification;
 
 namespace Infra.CrossCutting.Notification.Bus;
 

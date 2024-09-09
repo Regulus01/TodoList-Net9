@@ -1,10 +1,10 @@
 ﻿using System.Net;
-using Api.Controllers.Base;
 using Application.Dto.TaskItem;
 using Application.Interface;
 using Application.ViewModels.TaskItem;
 using Application.ViewModels.TaskList;
-using Infra.CrossCutting.Notification.Interface;
+using Domain.Interface.Command.Interface;
+using Infra.CrossCutting.Controller;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
