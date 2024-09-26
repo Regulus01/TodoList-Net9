@@ -24,6 +24,7 @@ public interface ITaskListAppService
     /// <param name="id">Task list id</param>
     /// <returns>Task list has been obtained</returns>
     TaskListViewModel? Get(Guid? id);
+    IEnumerable<PaginatedTaskListViewModel> GetPaginatedTasks(int skip = 0, int take = 10);
     
     /// <summary>
     /// Update one task list

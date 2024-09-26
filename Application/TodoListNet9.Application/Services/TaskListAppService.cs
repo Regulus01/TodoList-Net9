@@ -46,7 +46,7 @@ public class TaskListAppService : ITaskListAppService
     public TaskListViewModel? Get(Guid? id)
     {
         var taskList = _taskListRepository.Query<TaskList>(x => x.Id == id,
-            y => y.Include(i => i.TaskItems)!).FirstOrDefault();
+            includes: y => y.Include(i => i.TaskItems)!).FirstOrDefault();
 
         if (taskList == null)
         {
@@ -55,6 +55,17 @@ public class TaskListAppService : ITaskListAppService
         }
 
         return _mapper.Map<TaskListViewModel>(taskList);
+    }
+
+    public IEnumerable<PaginatedTaskListViewModel> GetPaginatedTasks(int skip = 0, int take = 10)
+    {
+        var tasks = _taskListRepository.Query<TaskList>(skip: skip, take: take).ToList()
+            .OrderByDescending(x => x.CreationDate);
+
+        if (!tasks.Any())
+            return new List<PaginatedTaskListViewModel>();
+
+        return _mapper.Map<IEnumerable<PaginatedTaskListViewModel>>(tasks);
     }
 
     /// <inheritdoc />
@@ -93,7 +104,7 @@ public class TaskListAppService : ITaskListAppService
     public void Delete(Guid? id)
     {
         var taskList = _taskListRepository.Query<TaskList>(x => x.Id == id,
-            y => y.Include(i => i.TaskItems)!).FirstOrDefault();
+            includes: y => y.Include(i => i.TaskItems)!).FirstOrDefault();
 
         if (taskList == null)
         {

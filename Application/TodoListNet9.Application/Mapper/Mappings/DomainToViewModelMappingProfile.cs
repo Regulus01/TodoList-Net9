@@ -11,8 +11,9 @@ public class DomainToViewModelMappingProfile : Profile
     public DomainToViewModelMappingProfile()
     {
         CreateMap<TaskItem, TaskItemViewModel>().ReverseMap();
+        CreateMap<TaskList, TaskListViewModel>().ReverseMap();
+        CreateMap<TaskList, PaginatedTaskListViewModel>().ReverseMap();
         
-        //Events
         CreateMap<CreateTaskListEvent, TaskListViewModel>();
         CreateMap<CreateTaskItemEvent, TaskItemViewModel>();
     }

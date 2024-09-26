@@ -72,6 +72,23 @@ public class TaskListController : BaseController
     }
 
     /// <summary>
+    /// Get paginated tasks
+    /// </summary>
+    /// <param name="skip">Skip items</param>
+    /// <param name="take">Take items</param>
+    /// <returns>Task list</returns>
+    [ProducesResponseType(typeof(TaskListViewModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [HttpGet]
+    [Route("{skip:int?}/{take:int?}")]
+    public IActionResult GetPaginateTasks([FromRoute] int skip = 0, [FromRoute] int take = 10)
+    {
+        var result = _taskListAppService.GetPaginatedTasks(skip, take);
+        
+        return Response(HttpStatusCode.OK, result);
+    }
+
+    /// <summary>
     /// Delete one task list for id
     /// </summary>
     /// <remarks>

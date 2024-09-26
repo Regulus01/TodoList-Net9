@@ -24,17 +24,22 @@ public abstract class BaseRepository<TContext, TClass> : IBaseRepository where T
         _context.Add(entity);
     }
 
-    public IEnumerable<T> Query<T>(Expression<Func<T, bool>> filter, 
+    public IEnumerable<T> Query<T>(Expression<Func<T, bool>>? filter = null, int? skip = null, int? take = null,
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? includes = null) where T : class
     {
-        var query = _context.Set<T>()
-                            .AsQueryable();
-        
-        if(includes != null)
+        var query = _context.Set<T>().AsQueryable();
+
+        if (includes != null)
             query = includes(query);
 
-        var result = query.Where(filter).ToList();
-        
+        if (skip != null && take != null)
+            query = query.Skip(skip.Value).Take(take.Value);
+
+        if (filter != null)
+            query = query.Where(filter);
+
+        var result = query.ToList();
+
         return result;
     }
 
@@ -51,7 +56,7 @@ public abstract class BaseRepository<TContext, TClass> : IBaseRepository where T
     public bool SaveChanges()
     {
         UpdateAuditDates();
-        
+
         try
         {
             var result = _context.SaveChanges();
