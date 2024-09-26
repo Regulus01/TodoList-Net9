@@ -80,6 +80,7 @@ public class TaskListController : BaseController
     [ProducesResponseType(typeof(TaskListViewModel), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [HttpGet]
+    [ResponseCache(Duration = 10)]
     [Route("{skip:int?}/{take:int?}")]
     public IActionResult GetPaginateTasks([FromRoute] int skip = 0, [FromRoute] int take = 10)
     {

@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddInfraestructure(builder.Configuration);
+builder.Services.AddResponseCaching();
 
 var app = builder.Build();
 
@@ -24,6 +25,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseResponseCaching();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
